@@ -4,13 +4,13 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
   server: {
-    watch: {
-      usePolling: false,
-    },
     host: '0.0.0.0',
     port: 5173,
+    strictPort: true,
     hmr: {
+      protocol: 'ws',
       host: '172.20.8.179',
+      clientPort: 5173,
     },
   },
   plugins: [
