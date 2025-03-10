@@ -1,0 +1,4 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import '@vuepic/vue-datepicker/dist/main.css';
