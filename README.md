@@ -1,71 +1,119 @@
-# Setup Instructions for Running the Application
 
-## 1. Install Laravel Dependencies
-Run the following command to install Laravel backend dependencies:
+
+This repository contains a fully Dockerized Laravel + Vue.js web application.
+
+---
+
+## Prerequisites
+
+Ensure you have the following installed on your system:
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+---
+
+## Clone the Repository
+
+First, clone this repository:
 
 ```sh
-composer install
+git clone https://github.com/avesovich/docker-report-app.git
+cd docker-report-app
 ```
 
-## 2. Install Frontend Dependencies
-Run the following command to install frontend assets:
+---
+
+## Build and Start Containers
+
+Run the following command to build and start the Docker containers:
 
 ```sh
-npm install
+docker-compose up -d --build
 ```
 
-## 3. Setup Environment File
-Copy the example environment file:
+This will:
+- Build and start the Laravel, Vue.js, MySQL, and Nginx containers.
+- Install dependencies and set up the environment.
 
-```sh
-cp .env.example .env
-```
+---
 
-## 4. Generate Application Key
+## Generate Application Key
+
 Generate the Laravel application key:
 
 ```sh
-php artisan key:generate
+docker exec -it laravel_app php artisan key:generate
 ```
 
-## 5. Run Database Migrations
-Run database migrations to set up tables:
+---
+
+## Run Database Migrations and Seeders
+
+To set up the database schema and seed initial data, run:
 
 ```sh
-php artisan migrate
+docker exec -it laravel_app php artisan migrate --seed
 ```
 
-## 6. Seed the Database
-Seed the database with initial data:
+---
+
+## Fetch Latest News
+
+Manually fetch RSS news updates:
 
 ```sh
-php artisan db:seed
+docker exec -it laravel_app php artisan fetch:news
 ```
 
-## 7. Fetching RSS News
-### Schedule (Hourly):
-Run the scheduler to fetch news automatically every hour:
+---
+
+## Run Laravel Scheduler
+
+The application relies on scheduled tasks. Start the Laravel scheduler:
 
 ```sh
-php artisan schedule:work
+docker exec -it laravel_app php artisan schedule:work
 ```
 
-### Manually:
-Fetch news manually using the command:
+---
+
+## Access the Application
+
+Once everything is up and running:
+
+- **Backend API (Laravel)**: [http://localhost](http://localhost)
+- **Frontend (Vue.js via Vite)**: [http://localhost:5173](http://localhost:5173)
+- **MySQL Database**: `mysql -h 127.0.0.1 -P 3306 -u laravel -psecret`
+
+---
+
+## Stopping the Containers
+
+To stop all running containers:
 
 ```sh
-php artisan fetch:news
+docker-compose down
 ```
 
-## 8. Compile Frontend Assets
-Run the following command to compile frontend assets:
+To stop containers and **remove volumes** (⚠️ This will erase the database):
 
 ```sh
-npm run dev
+docker-compose down -v
 ```
 
-## 9. Start the Application
-Run the Laravel development server:
+---
+
+## Restarting Containers
+
+If you need to restart your app:
 
 ```sh
-php artisan serve
+docker-compose restart
+```
+
+or fully rebuild:
+
+```sh
+docker-compose up -d --build
+```
