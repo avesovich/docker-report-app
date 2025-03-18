@@ -29,7 +29,8 @@ cd docker-report-app
 Run the following command to build and start the Docker containers:
 
 ```sh
-docker-compose up -d --build
+docker-compose build --no-cache
+docker-compose up -d
 ```
 
 This will:
@@ -40,8 +41,12 @@ This will:
 
 ## Generate Application Key
 
-Generate the Laravel application key:
+Before generating the application key, copy .env.example to .env:
 
+```sh
+docker exec -it laravel_app cp /var/www/html/.env.example /var/www/html/.env
+```
+Then, generate the Laravel application key:
 ```sh
 docker exec -it laravel_app php artisan key:generate
 ```
