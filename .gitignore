@@ -10,7 +10,6 @@
 Homestead.json
 Homestead.yaml
 .env
-.env.*
 /auth.json
 npm-debug.log
 yarn-error.log
